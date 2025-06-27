@@ -44,6 +44,34 @@ int main() {
     std::mt19937 rng(std::random_device{}());
     generateMaze(1, 1, rng);
 
+    bool enterPleced = false;
+    for (int i = 1; i < cols && !enterPleced; i++) {
+        if (maze[1][i] == ROAD) {
+            maze[0][i] = 'E';
+            enterPleced = true;
+        }
+    }
+    for (int i = 1; i < rows && !enterPleced; i++) {
+        if (maze[i][1] == ROAD) {
+            maze[i][0] = 'E';
+            enterPleced = true;
+        }
+    }
+
+    bool exitPlaced = false;
+    for (int i = cols - 2; i > 0 && !exitPlaced; i--) {
+        if (maze[rows - 2][i] == ROAD) {
+            maze[rows - 1][i] = 'X';
+            exitPlaced = true;
+        }
+    }
+    for (int i = rows - 2; i > 0 && !exitPlaced; i--) {
+        if (maze[i][cols - 2] == ROAD) {
+            maze[i][cols - 1] = 'X';
+            exitPlaced = true;
+        }
+    }
+
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
             std::cout << maze[i][j] << " ";
