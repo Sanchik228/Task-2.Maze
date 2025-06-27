@@ -21,11 +21,14 @@ void generateMaze(int x, int y) {
 
     std::shuffle(dirs.begin(), dirs.end(), std::default_random_engine(std::time(0)));
 
-    for (int i = 0; i < dirs.size(); i++) {
+    for (int i : dirs) {
         int nx = x + dx[i];
         int ny = y + dy[i];
 
-
+        if (isValid(nx, ny)) {
+            maze[x + dx[i] / 2][y + dy[i] / 2] = ROAD;
+            generateMaze(nx, ny);
+        }
     }
 }
 
@@ -33,7 +36,12 @@ int main() {
     std::cout << "Enter maze size (rows cols): ";
     std::cin >> rows >> cols;
 
+    if (rows % 2 == 0) rows += 1;
+    if (cols % 2 == 0) cols += 1;
+
     maze = std::vector<std::vector<char>>(rows, std::vector<char>(cols, WALL));
+
+    generateMaze(1, 1);
 
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
