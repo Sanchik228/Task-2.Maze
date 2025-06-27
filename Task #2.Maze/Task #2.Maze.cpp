@@ -8,13 +8,16 @@ const char WALL = '#';
 int rows, cols;
 std::vector<std::vector<char>> maze;
 
+const int dx[] = { -2, 2, 0 ,0 };
+const int dy[] = { 0, 0, -2, 2 };
+
 void generateMaze(int x, int y) {
     maze[x][y] = ROAD;
     std::vector<int> dirs = { 0, 1, 2, 3 };
 
     std::shuffle(dirs.begin(), dirs.end(), std::default_random_engine(std::time(0)));
 
-
+    
 }
 
 int main() {
