@@ -1,6 +1,8 @@
 ﻿#include <iostream>
 #include <vector>
 #include <random>
+#include <ctime>
+#include <cstdlib>
 
 const char ROAD = ' ';
 const char WALL = '#';
@@ -86,6 +88,18 @@ int main() {
         std::sample(freeCels.begin(), freeCels.end(), &treasure, 1, rng);
         auto [x, y] = treasure;
         maze[x][y] = '$';
+
+        freeCels.erase(std::remove(freeCels.begin(), freeCels.end(), treasure), freeCels.end());
+
+        std::srand(std::time(0));
+        int trapCount = std::min(std::rand() % 6, static_cast<int>(freeCels.size()));
+
+        std::vector<std::pair<int, int>> traps(trapCount);
+        std::sample(freeCels.begin(), freeCels.end(), traps.begin(), trapCount, rng);
+
+        for (auto [x, y] : traps) {
+            maze[x][y] = 'T';
+        }
     }
 
     for (int i = 0; i < rows; i++) {
