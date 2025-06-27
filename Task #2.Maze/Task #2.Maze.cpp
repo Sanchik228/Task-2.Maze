@@ -72,6 +72,22 @@ int main() {
         }
     }
 
+    std::vector<std::pair<int, int>> freeCels;
+
+    for (int i = 1; i < rows - 1; i++) {
+        for (int j = 1; j < cols - 1; j++) {
+            if (maze[i][j] == ROAD) {
+                freeCels.emplace_back(i, j);
+            }
+        }
+    }
+    if (!freeCels.empty()) {
+        std::pair<int, int> treasure;
+        std::sample(freeCels.begin(), freeCels.end(), &treasure, 1, rng);
+        auto [x, y] = treasure;
+        maze[x][y] = '$';
+    }
+
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
             std::cout << maze[i][j] << " ";
