@@ -15,11 +15,11 @@ bool isValid(int x, int y) {
     return x > 0 && x < rows - 1 && y > 0 && y < cols - 1 && maze[x][y] == WALL;
 }
 
-void generateMaze(int x, int y) {
+void generateMaze(int x, int y, std::mt19937& rng) {
     maze[x][y] = ROAD;
     std::vector<int> dirs = { 0, 1, 2, 3 };
 
-    std::shuffle(dirs.begin(), dirs.end(), std::default_random_engine(std::time(0)));
+    std::shuffle(dirs.begin(), dirs.end(), rng);
 
     for (int i : dirs) {
         int nx = x + dx[i];
@@ -27,7 +27,7 @@ void generateMaze(int x, int y) {
 
         if (isValid(nx, ny)) {
             maze[x + dx[i] / 2][y + dy[i] / 2] = ROAD;
-            generateMaze(nx, ny);
+            generateMaze(nx, ny, rng);
         }
     }
 }
@@ -41,7 +41,8 @@ int main() {
 
     maze = std::vector<std::vector<char>>(rows, std::vector<char>(cols, WALL));
 
-    generateMaze(1, 1);
+    std::mt19937 rng(std::random_device{}());
+    generateMaze(1, 1, rng);
 
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
